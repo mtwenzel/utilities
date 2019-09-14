@@ -1,16 +1,18 @@
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
 def provide_PPMI_dataset(paths_dict={}, target_size=(109,91), batch_size=32):
 
     def get_data_generators(paths_dict, batch_size, target_size):
-    '''
-    Returns generators for batches of train/val/test data collected from the folders given to the function. 
+        '''
+        Returns generators for batches of train/val/test data collected from the folders given to the function. 
     
-    Params: 
-        paths_dict: Dictionary with three paths in 'train', 'val', 'test' pointing to folders with images to use. Subfolders are assumed to contain classes. Mandatory.
-        batch_size: Batch size. Default=32
-        target_size: 2D size tuple to rescale the images to. Default=(109,91)
-    Returns:
-        train_generator, val_generator, test_generator: Generator functions to retrieve a batch of data
-    '''
+        Params: 
+            paths_dict: Dictionary with three paths in 'train', 'val', 'test' pointing to folders with images to use. Subfolders are assumed to contain classes. Mandatory.
+            batch_size: Batch size. Default=32
+            target_size: 2D size tuple to rescale the images to. Default=(109,91)
+        Returns:
+            train_generator, val_generator, test_generator: Generator functions to retrieve a batch of data
+        '''
     train_datagen = ImageDataGenerator(rescale=1./255, horizontal_flip=True, dtype=tf.float32)
     test_datagen =  ImageDataGenerator(rescale=1./255, dtype=tf.float32)
     train_generator = train_datagen.flow_from_directory(paths_dict['train'], 
@@ -58,5 +60,5 @@ def provide_PPMI_dataset(paths_dict={}, target_size=(109,91), batch_size=32):
                     'test': '/content/data/PPMI-classification/all_2d_val'}
 
     train_generator, val_generator, test_generator = get_data_generators(paths_dict, target_size=target_size)
-
+    
     return train_generator, val_generator, test_generator
